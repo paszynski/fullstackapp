@@ -22,8 +22,7 @@
                     <div style="display: flex; flex-wrap: wrap; margin: -5px -5px;">
                         <div class="custom-card" style="margin: 5px 5px; color:black;"
                             ng-repeat="entry in order.entries track by $index">
-                            <p>Kolor: {{getTextByValue($ctrl.colors,entry.color)}} </p>
-                            <p>Rozmiar: {{getTextByValue($ctrl.sizes,entry.size)}} </p>
+                            <div style="width: {{entry.size}}px; height: {{entry.size}}px; background-color: {{entry.color}};"></div>
                         </div>
                     </div>
                 </div>
