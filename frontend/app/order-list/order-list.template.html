@@ -1,0 +1,39 @@
+<div class="panel panel-primary" data-ng-init="fetchOrders()">
+    <div class="panel-heading clearfix">
+        <h5 class="panel-title pull-left">Lista zamówień: <span class="badge">{{$ctrl.orders.length}}</span></h5>
+        <div class="btn-group pull-right" role="group">
+            <button type="button" class="btn btn-default" ng-click="loadList()">
+                Szukaj
+                <span class="glyphicon glyphicon-search"></span>
+            </button>
+        </div>
+    </div>
+    <div class="panel-body">
+
+        <ul class="list-group">
+            <li class="list-group-item" ng-repeat="order in $ctrl.orders track by $index"
+                ng-init="showDetails[$index] = false" ng-click="showDetails[$index]=!showDetails[$index]"
+                ng-class="{'active': showDetails[$index] }">
+                <h4 class="list-group-item-heading">{{order.name}} / {{order.age}} l.<!--<span
+                        class="badge">{{order.entries.length}}</span>--></h4>
+                <p class="list-group-item-text">Data zamówienia: {{order.dateAdded | date : "d/MM/y HH:mm" }}</p>
+
+                <div class="list-group-item" style="padding: 5px;" ng-if="showDetails[$index]">
+                    <div style="display: flex; flex-wrap: wrap; margin: -5px -5px;">
+                        <div class="custom-card" style="margin: 5px 5px; color:black;"
+                            ng-repeat="entry in order.entries track by $index">
+                            <p>Kolor: {{getTextByValue($ctrl.colors,entry.color)}} </p>
+                            <p>Rozmiar: {{getTextByValue($ctrl.sizes,entry.size)}} </p>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+    </div>
+</div>
+<style>
+    .badge {
+        margin-left: 10px;
+    }
+</style>

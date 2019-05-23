@@ -1,0 +1,6 @@
+
+GET     /orders                     controllers.OrderController.getOrders()
+POST    /orders                     controllers.OrderController.addOrder(request:Request)
+GET     /colors                     controllers.ColorSizeController.getColors()
+GET     /sizes                      controllers.ColorSizeController.getSizes()
+

@@ -1,0 +1,13 @@
+backend/**/logs
+backend/**/target
+backend/**/.idea
+backend/**/.idea_modules
+backend/**/.classpath
+backend/**/.project
+backend/**/.settings
+backend/**/RUNNING_PID
+
+backend/**/.vscode
+
+**/node_modules
+frontend/app/lib
