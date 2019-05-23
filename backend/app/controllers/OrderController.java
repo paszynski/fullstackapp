@@ -1,12 +1,9 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import models.Entry;
-import models.Order;
+import models.*;
 import play.libs.Json;
 import play.mvc.BodyParser;
-import models.EntryRepository;
-import models.OrderRepository;
 import play.libs.concurrent.HttpExecutionContext;
 import play.mvc.Controller;
 import play.mvc.Http;
@@ -28,12 +25,14 @@ public class OrderController extends Controller {
 
     private final OrderRepository orderRepository;
     private final EntryRepository entryRepository;
+    private final ColorSizeLimitRepository colorSizeLimitRepository;
     private final HttpExecutionContext ec;
 
     @Inject
-    public OrderController(OrderRepository orderRepository, EntryRepository entryRepository, HttpExecutionContext ec) {
+    public OrderController(OrderRepository orderRepository, EntryRepository entryRepository, ColorSizeLimitRepository colorSizeLimitRepository, HttpExecutionContext ec) {
         this.orderRepository = orderRepository;
         this.entryRepository = entryRepository;
+        this.colorSizeLimitRepository = colorSizeLimitRepository;
         this.ec = ec;
     }
 /*
@@ -50,6 +49,8 @@ public class OrderController extends Controller {
 
         for (Entry entry : order.getEntries()){
             entry.setOrder(order);
+
+            colorSizeLimitRepository.decrementLimit(new ColorSizeLimitIdentity(entry.getColor(), entry.getSize()));
         }
 
         return orderRepository

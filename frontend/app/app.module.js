@@ -12,7 +12,8 @@ var app = angular.
 	service('fetchColors', ['$http','REST_URL', function ($http, REST_URL) {
 		return $http.get(REST_URL + "/colors");
 	}]
-	).service('getTextByValue', function(){
+	).
+	service('getTextByValue', function(){
 		return function(arr, val){
 			return (arr.find(function(e){ return e.value == val; }) || { text: "nieznany"}).text;
 		}

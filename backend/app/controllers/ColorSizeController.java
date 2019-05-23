@@ -25,12 +25,14 @@ public class ColorSizeController extends Controller {
 
     private final ColorRepository colorRepository;
     private final SizeRepository sizeRepository;
+    private final ColorSizeLimitRepository colorSizeLimitRepository;
     private final HttpExecutionContext ec;
 
     @Inject
-    public ColorSizeController(ColorRepository colorRepository, SizeRepository sizeRepository, HttpExecutionContext ec) {
+    public ColorSizeController(ColorRepository colorRepository, SizeRepository sizeRepository, ColorSizeLimitRepository colorSizeLimitRepository, HttpExecutionContext ec) {
         this.colorRepository = colorRepository;
         this.sizeRepository = sizeRepository;
+        this.colorSizeLimitRepository = colorSizeLimitRepository;
         this.ec = ec;
     }
     /*
@@ -51,4 +53,9 @@ public class ColorSizeController extends Controller {
                 .thenApplyAsync(personStream -> ok(toJson(personStream.collect(Collectors.toList()))), ec.current());
     }
 
+    public CompletionStage<Result> getLimits() {
+        return colorSizeLimitRepository
+                .list()
+                .thenApplyAsync(orderStream -> ok(toJson(orderStream.collect(Collectors.toList()))), ec.current());
+    }
 }

@@ -2,7 +2,7 @@ angular.
 	module('orderAdd').
 	component('orderAdd', {
 		templateUrl: 'order-add/order-add.template.html',
-		controller: ['$scope', '$http', 'REST_URL', 'fetchSizes', 'fetchColors', 'getTextByValue',
+		controller: ['$scope', '$http', 'REST_URL', 'fetchSizes', 'fetchColors', 'getTextByValue', 
 			function OrderAddController($scope, $http, REST_URL, fetchSizes, fetchColors, getTextByValue) {
 				var self = this;
 
@@ -14,11 +14,33 @@ angular.
 				self.sizes = [];
 				fetchSizes.then(v => self.sizes = v.data).then(v => console.log(v));
 
+				self.csl = [];
+				fetchCSL = function(){
+					return $http.get(REST_URL + "/csl").then(v => self.csl = v.data);
+				}
+				fetchCSL();
+
 				$scope.getTextByValue = getTextByValue;
 
 				$scope.entry = {
 					"color": undefined,
 					"size": undefined
+				}
+
+				$scope.validateCSL = function (){
+					color = $scope.entry.color;
+					size = $scope.entry.size;
+
+					if (color === undefined || size === undefined){
+						return true;
+					}
+					console.log(self.csl);
+					result = (self.csl.filter(function(e){ return e.colorSizeLimitId.color == color && e.colorSizeLimitId.size == size && e.limit > 0; }).length > 0);
+					
+					if (!result){
+						alert("Dla wybranej pary kolor - rozmiar wykorzystano już wszystkie zamówienia.");
+					}
+					return result;
 				}
 
 				validateForm = function () {
@@ -48,6 +70,10 @@ angular.
 						$scope.orderForm.size.$setDirty();
 					}
 
+					if ($scope.validateCSL() == false) {
+						result = false;
+					}
+
 					return result;
 				}
 
@@ -68,12 +94,17 @@ angular.
 						"name": undefined,
 						"age": undefined
 					}
+					fetchCSL();
 				}
 
 				$scope.saveEntry = function () {
 					if (!validateEntry()) {
 						return;
 					}
+					
+					console.log("UPDATE LIMIT");
+					limit = self.csl.find(function(e){ return e.colorSizeLimitId.color == color && e.colorSizeLimitId.size == size && e.limit > 0; })
+					limit.limit -= 1;
 
 					self.entries.push({
 						"color": $scope.entry.color,

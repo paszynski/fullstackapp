@@ -63,7 +63,7 @@
 								ng-class="{'has-success':orderForm.color.$valid && !orderForm.color.$pristine, 'has-error':orderForm.color.$invalid && !orderForm.color.$pristine}">
 								<label class="control-label col-sm-5" for="color">Kolor:</label>
 								<div class="col-sm-3">
-									<select class="form-control" name="color" ng-model="entry.color" required>
+									<select class="form-control" name="color" ng-model="entry.color" ng-change="validateCSL()" required>
 										<option value="{{color.value}}" ng-repeat="color in $ctrl.colors">
 											{{color.text}} </option>
 									</select>
@@ -81,6 +81,7 @@
 										<div class="form-check" ng-repeat="size in $ctrl.sizes">
 											<label class="form-check-label">
 												<input type="radio" class="form-check-input" name="size"
+													ng-change="validateCSL()"
 													ng-value="size.value" ng-model="entry.size"
 													ng-required="!entry.size">
 												{{size.text}}

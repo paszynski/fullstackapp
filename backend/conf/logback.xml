@@ -29,6 +29,7 @@
 
   <logger name="akka" level="INFO" />
   <logger name="akka" level="INFO" />
+  <logger name="colorsizelimitrepository" level="DEBUG" />
 
 
   <root level="WARN">
